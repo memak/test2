@@ -40,6 +40,8 @@ var gdpr = (function () {
         //we don't know if third-party encodes the keys -> also try deleting encoded key
         document.cookie = key + cookieOpts;
         document.cookie = encodeURIComponent(key) + cookieOpts;
+        
+        console.log("remove cookie: " + encodeURIComponent(key) + cookieOpts);
     }
 
     function getCookie (cookieName) {
