@@ -9,7 +9,7 @@ var gdpr = (function () {
     };
     
     var deleteCookies = {
-        opt_out_analytics: [{name: 'aam_uuid', domain: null}, {name: 'dextp', domain: '.demdex.net'}, {name: 'dpm', domain: '.demdex.net'}, {name: 'DST', domain: '.demdex.net'}, {name: '127', domain: '.demdex.net'}, {name: 'demdex', domain: '.demdex.net'}, {name: 'AMCV_#', domain: '.unitymediabusiness.de'}, {name: 'AMCVS_#AdobeOrg', domain: '.unitymediabusiness.de'}, {name: 's_cc', domain: null}, {name: 's_sq', domain: null}, {name: 's_fid', domain: null}, {name: 'client_info', domain: null}, {name: 'pa-l', domain: null}, {name:'pa-l_enabled', domain: null}, {name: '__cfduid', domain: '.pingdom.net'}, {name: 'ruxitagentjs__Store', domain: null}, {name: 'PIWIK_SESSID', domain: '.analytics.brandslisten.com'}, {name: '_pk_id#', domain: '.community.unitymedia.de'}, {name: '_pk_ses#', domain: '.community.unitymedia.de'}, {name: 'img/beacon.gif', domain: '.img/beacon.gif'}, {name: 's_pec', domain: null}, {name: 's_sess', domain: null}, {name: 's_pers', domain: '.unitymediabusiness.de'}, {name: 'businessVisit', domain: null}, {name: 'businessVisitCalled', domain: null}, {name: 'JSESSIONID', domain: '.nr-data.net'}, {name: 'rxVisitor', domain: null}, {name: 'rxvt', domain: null}, {name: 'dtCookie', domain: null},  {name: 'dtCookie', domain: 'www-unitymedia-de.uat.upc.biz'},  {name: 'dtCookie', domain: null}, {name: 'leo', domain: '.gacela.eu'}, {name: 'um_dynatrace_enabled', domain: null}],
+        opt_out_analytics: [{name: 'aam_uuid', domain: null}, {name: 'dextp', domain: '.demdex.net'}, {name: 'dpm', domain: '.demdex.net'}, {name: 'DST', domain: '.demdex.net'}, {name: '127', domain: '.demdex.net'}, {name: 'demdex', domain: '.demdex.net'}, {name: 'AMCV_#', domain: '.unitymediabusiness.de'}, {name: 'AMCVS_#AdobeOrg', domain: '.unitymediabusiness.de'}, {name: 's_cc', domain: null}, {name: 's_sq', domain: null}, {name: 's_fid', domain: null}, {name: 'client_info', domain: null}, {name: 'pa-l', domain: null}, {name:'pa-l_enabled', domain: null}, {name: '__cfduid', domain: '.pingdom.net'}, {name: 'ruxitagentjs__Store', domain: null}, {name: 'PIWIK_SESSID', domain: '.analytics.brandslisten.com'}, {name: '_pk_id#', domain: '.community.unitymedia.de'}, {name: '_pk_ses#', domain: '.community.unitymedia.de'}, {name: 'img/beacon.gif', domain: '.img/beacon.gif'}, {name: 's_pec', domain: null}, {name: 's_sess', domain: null}, {name: 's_pers', domain: '.unitymediabusiness.de'}, {name: 'businessVisit', domain: null}, {name: 'businessVisitCalled', domain: null}, {name: 'JSESSIONID', domain: '.nr-data.net'}, {name: 'rxVisitor', domain: null}, {name: 'rxvt', domain: null}, {name: 'dtCookie', domain: null}, {name: 'leo', domain: '.gacela.eu'}, {name: 'um_dynatrace_enabled', domain: null}],
         opt_out_mkt: [{name: 'click', domain: null, whitelist: 'mkt'}, {name: 'post_view', domain: null, whitelist: 'mkt'}],
         opt_out_social: [{name: 'impression.php/#', domain: '.facebook.com'}, {name: 'tr', domain: '.facebook.com'}, {name: 'GPS', domain: '.youtube.com'}, {name: 'PREF', domain: '.youtube.com'}, {name: 'VISITOR_INFO1_LIVE', domain: '.youtube.com'}, {name: 'YSC', domain: '.youtube.com'}, {name: 'pixel', domain: '.outbrain.com'}],
         opt_out_extmkt: [{name: '0', domain: '.adform.net'}, {name: 'cid', domain: '.adform.net'}, {name: 'uid', domain: '.adform.net'}, {name: 'rtrgt_17231', domain: '.redintelligence.net'}, {name: 'uid', domain: '.redintelligence.net'}, {name: '8lcfmzhxc8d6_uid', domain: '.redintelligence.net'}, {name: 'rtrgt_17231', domain: '.redintelligence.net'}, {name: 'ev_sync_dd', domain: '.everesttech.net'}, {name: 'everest_g_v2', domain: '.everesttech.net'}, {name: 'everest_session_v2', domain: '.everesttech.net'}, {name: 's_vi_lizx7Ex7Cktxxwx604zvttlwpmx604mx7Cjm', domain: '.omtrdc.net'}, {name: 'IDE', domain: '.doubleclick.net'}, {name: 'test_cookie', domain: '.doubleclick.net'}, {name: 'ads/user-lists/#', domain: '.google.com'}],
@@ -36,12 +36,14 @@ var gdpr = (function () {
     }
 
     function removeCookie (key, curDomain) {
-        var cookieOpts = '=; Max-Age=-99999999;path=/;domain=' + (!!curDomain ? curDomain : domain);
+        var cookieOpts1 = '=; Max-Age=-99999999;path=/;domain=' + (!!curDomain ? curDomain : domain);
+        //domain is always only subdomain, e.g. upc.biz, but we sometimes cookies are also set for the complete domain additionally by third-parties, so we need to handle this case as well
+        var cookieOpts2 = '=; Max-Age=-99999999;path=/';
         //we don't know if third-party encodes the keys -> also try deleting encoded key
-        document.cookie = key + cookieOpts;
-        document.cookie = encodeURIComponent(key) + cookieOpts;
-        
-        console.log("remove cookie: " + encodeURIComponent(key) + cookieOpts);
+        document.cookie = key + cookieOpts1;
+        document.cookie = encodeURIComponent(key) + cookieOpts1;
+        document.cookie = key + cookieOpts2;
+        document.cookie = encodeURIComponent(key) + cookieOpts2;
     }
 
     function getCookie (cookieName) {
@@ -212,7 +214,6 @@ var gdpr = (function () {
         if(!!deleteCookies[category]) {
             deleteCookies[category].forEach(function (el) {
                 if(!(el.whitelist && cookieWhiteList[el.whitelist] && cookieWhiteList[el.whitelist].test(getCookie(el.name)))) {
-                    console.log('remove clearCat = ' + el.name);
                     removeCookie(el.name, el.domain);
                 }
             });
