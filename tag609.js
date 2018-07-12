@@ -1,3 +1,4 @@
+alert(1);
 var gdpr = (function () {
     var domain, bar, layer;
     var acceptedCookie = 'gdpr_accepted';
