@@ -212,6 +212,7 @@ var gdpr = (function () {
         if(!!deleteCookies[category]) {
             deleteCookies[category].forEach(function (el) {
                 if(!(el.whitelist && cookieWhiteList[el.whitelist] && cookieWhiteList[el.whitelist].test(getCookie(el.name)))) {
+                    console.log('remove clearCat = ' + el.name);
                     removeCookie(el.name, el.domain);
                 }
             });
