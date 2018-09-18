@@ -165,10 +165,11 @@ try {
           alert(this.exclude());
           alert(this.isErrorPage());
             if (!this.override() && this.detect() && !this.exclude() && !this.isErrorPage()) {
-                var a = this.https://www.unitymedia.de/privatkunden/mobil/mobilfunk/pure-mobile-500mb/th()
+                var a = this.getPath()
                   , b = (a.match(/(^https?:(?=\/\/\S+))/i) ? "" : this.baseUrl) + a + this.search + (this.search ? "&" : "?") + "ws_referrer=" + window.encodeURIComponent(window.location.origin + window.location.pathname);
                 window.location.replace(b)
             }
+            
         }
     }),
     f() && (a = a.extend({
